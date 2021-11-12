@@ -1,4 +1,12 @@
 export class Article {
+  /**
+   * 記事を表すクラス.
+   *
+   * @param _id
+   * @param _name
+   * @param _content
+   * @param _commentList
+   */
   constructor(
     // id
     private _id: number,

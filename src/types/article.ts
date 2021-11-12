@@ -1,3 +1,4 @@
+import { Comment } from "./comment";
 export class Article {
   /**
    * 記事を表すクラス.

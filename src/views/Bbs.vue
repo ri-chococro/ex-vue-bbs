@@ -10,10 +10,15 @@
     </div>
     <button type="button" v-on:click="addArticle">記事投稿</button>
     <hr />
-    <div v-for="article of currentArticleList" v-bind:key="article">
+    <div v-for="article of currentArticleList.reverse()" v-bind:key="article">
       <div>投稿者名：{{ article.name }}</div>
       <div>投稿内容：</div>
-      <div>{{ article.content }}</div>
+      <pre><div>{{ article.content }}</div></pre>
+      <button type="button">記事削除</button>
+      <div v-for="comment of article.commentList" v-bind:key="comment">
+        <div>コメント者名：{{ comment.name }}</div>
+        <div>コメント内容：{{ comment.content }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -44,7 +49,7 @@ export default class Bbs extends Vue {
   addArticle() {
     this["$store"].commit("addArticle", {
       article: new Article(
-        this.currentArticleList.length + 1,
+        this["$store"].getters.getArticles[0].id + 1,
         this.articleName,
         this.articleContent,
         []

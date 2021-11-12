@@ -14,7 +14,7 @@ export class Article {
     private _name: string,
     // 記事内容
     private _content: string,
-    // コメント
+    // コメント一覧
     private _commentList: Array<Comment>
   ) {}
 

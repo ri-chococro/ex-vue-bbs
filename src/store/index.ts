@@ -20,6 +20,12 @@ export default new Vuex.Store({
     ],
   }, // end state
   mutations: {
+    /**
+     * 新規投稿記事をstateに格納する.
+     *
+     * @param state - stateを利用するための引数
+     * @param payload - フォームにて入力された記事内容
+     */
     addArticle(state, payload) {
       state.articles.push(payload.article);
     },

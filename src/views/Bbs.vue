@@ -26,8 +26,11 @@ import { Article } from "@/types/article";
 export default class Bbs extends Vue {
   // 最新の投稿記事一覧
   private currentArticleList = [];
+  // 入力された投稿者指名
   private articleName = "";
+  // 入力された記事内容
   private articleContent = "";
+
   /**
    * Vuexストア内の投稿記事の情報を取得しcurrentArticleListに格納する.
    */
@@ -35,6 +38,9 @@ export default class Bbs extends Vue {
     this.currentArticleList = this["$store"].getters.getArticles;
   }
 
+  /**
+   * Vuexストア内のミューテーションを使って同期処理.
+   */
   addArticle() {
     this["$store"].commit("addArticle", {
       article: new Article(

@@ -20,17 +20,19 @@ export default new Vuex.Store({
     ],
   }, // end state
   mutations: {
-    addArticle(state, payload) {},
+    addArticle(state, payload) {
+      state.articles.push(payload.article);
+    },
   },
   actions: {},
-  /**
-   * 投稿記事の情報を返す.
-   *
-   * @param state - stateを利用するための引数
-   * @returns 投稿記事の情報
-   */
   getters: {
-    getArticle(state) {
+    /**
+     * 投稿記事の情報を返す.
+     *
+     * @param state - stateを利用するための引数
+     * @returns 投稿記事の情報
+     */
+    getArticles(state) {
       return state.articles;
     },
   },

@@ -2,13 +2,13 @@
   <div class="bbs">
     <div>
       投稿者名：
-      <input type="text" name="" id="" />
+      <input type="text" v-model="articleName" />
     </div>
     <div>
       投稿内容：
-      <textarea name="" id="" cols="30" rows="10"></textarea>
+      <textarea cols="30" rows="10" v-model="articleContent"></textarea>
     </div>
-    <button type="button">記事投稿</button>
+    <button type="button" v-on:click="addArticle">記事投稿</button>
     <hr />
     <div v-for="article of currentArticleList" v-bind:key="article">
       <div>投稿者名：{{ article.name }}</div>
@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Article } from "@/types/article";
 
 @Component
 export default class Bbs extends Vue {
@@ -31,11 +32,18 @@ export default class Bbs extends Vue {
    * Vuexストア内の投稿記事の情報を取得しcurrentArticleListに格納する.
    */
   created() {
-    this.currentArticleList = this["$store"].getters.getArticle;
+    this.currentArticleList = this["$store"].getters.getArticles;
   }
 
   addArticle() {
-    this["$store"].commit("addArticle", item);
+    this["$store"].commit("addArticle", {
+      article: new Article(
+        this.currentArticleList.length + 1,
+        this.articleName,
+        this.articleContent,
+        []
+      ),
+    });
   }
 }
 </script>

@@ -1,10 +1,16 @@
 <template>
   <div class="bbs">
     <div>
+      <div class="error">
+        {{ articleNameError }}
+      </div>
       投稿者名：
       <input type="text" v-model="articleName" />
     </div>
     <div>
+      <div class="error">
+        {{ articleContentError }}
+      </div>
       投稿内容：
       <textarea cols="30" rows="10" v-model="articleContent"></textarea>
     </div>
@@ -54,6 +60,8 @@ export default class Bbs extends Vue {
   private articleName = "";
   // 入力された記事内容
   private articleContent = "";
+  private articleNameError = "";
+  private articleContentError = "";
 
   // // 入力されたコメント投稿者氏名
   // private commentName = "";
@@ -71,16 +79,34 @@ export default class Bbs extends Vue {
    * Vuexストア内のミューテーションを使って同期処理（新規記事追加）.
    */
   addArticle() {
-    this["$store"].commit("addArticle", {
-      article: new Article(
-        this["$store"].getters.getArticles[0].id + 1,
-        this.articleName,
-        this.articleContent,
-        []
-      ),
-    });
-    this.articleName = "";
-    this.articleContent = "";
+    this.articleNameError = "";
+    this.articleContentError = "";
+    if (this.articleName == "") {
+      this.articleNameError = "名前を入力してください";
+    } else if (this.articleName.length > 50) {
+      this.articleNameError = "名前は50字以内で⼊⼒してください";
+    }
+
+    if (this.articleContent == "") {
+      this.articleContentError = "内容を入力してください";
+    }
+
+    if (
+      this.articleName !== "" &&
+      this.articleContent !== "" &&
+      this.articleName.length <= 50
+    ) {
+      this["$store"].commit("addArticle", {
+        article: new Article(
+          this["$store"].getters.getArticles[0].id + 1,
+          this.articleName,
+          this.articleContent,
+          []
+        ),
+      });
+      this.articleName = "";
+      this.articleContent = "";
+    }
   }
 
   // /**
@@ -114,4 +140,8 @@ export default class Bbs extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped>
+.error {
+  color: red;
+}
+</style>

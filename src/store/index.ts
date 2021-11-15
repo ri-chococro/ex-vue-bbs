@@ -27,7 +27,21 @@ export default new Vuex.Store({
      * @param payload - フォームにて入力された記事内容
      */
     addArticle(state, payload) {
-      state.articles.push(payload.article);
+      state.articles.unshift(payload.article);
+    },
+
+    /**
+     * 新規コメントをstateに格納する.
+     *
+     * @param state - stateを利用するための引数
+     * @param payload - フォームにて入力されたコメント内容
+     */
+    addComment(state, payload) {
+      for (const article of state.articles) {
+        if (article.id == payload.comment.articleId) {
+          article.commentList.unshift(payload.comment);
+        }
+      }
     },
   },
   actions: {},

@@ -10,15 +10,27 @@
     </div>
     <button type="button" v-on:click="addArticle">記事投稿</button>
     <hr />
-    <div v-for="article of currentArticleList.reverse()" v-bind:key="article">
+
+    <div v-for="article of currentArticleList" v-bind:key="article.id">
       <div>投稿者名：{{ article.name }}</div>
       <div>投稿内容：</div>
       <pre><div>{{ article.content }}</div></pre>
       <button type="button">記事削除</button>
-      <div v-for="comment of article.commentList" v-bind:key="comment">
+      <div v-for="comment of article.commentList" v-bind:key="comment.id">
         <div>コメント者名：{{ comment.name }}</div>
         <div>コメント内容：{{ comment.content }}</div>
       </div>
+
+      <div>名前：</div>
+      <input type="text" v-model="commentName" />
+      <div>コメント：</div>
+      <div>
+        <textarea cols="30" rows="10" v-model="commentContent"></textarea>
+      </div>
+      <button type="button" v-on:click="addComment(article.id)">
+        コメント投稿
+      </button>
+      <hr />
     </div>
   </div>
 </template>
@@ -26,15 +38,20 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Article } from "@/types/article";
+import { Comment } from "@/types/comment";
 
 @Component
 export default class Bbs extends Vue {
   // 最新の投稿記事一覧
   private currentArticleList = [];
-  // 入力された投稿者指名
+  // 入力された記事投稿者氏名
   private articleName = "";
   // 入力された記事内容
   private articleContent = "";
+  // 入力されたコメント投稿者氏名
+  private commentName = "";
+  // 入力されたコメント内容
+  private commentContent = "";
 
   /**
    * Vuexストア内の投稿記事の情報を取得しcurrentArticleListに格納する.
@@ -55,6 +72,24 @@ export default class Bbs extends Vue {
         []
       ),
     });
+    this.articleName = "";
+    this.articleContent = "";
+  }
+
+  /**
+   * Vuexストア内のミューテーションを使って同期処理.
+   */
+  addComment(articleId: number) {
+    this["$store"].commit("addComment", {
+      comment: new Comment(
+        -1,
+        this.commentName,
+        this.commentContent,
+        articleId
+      ),
+    });
+    this.commentName = "";
+    this.commentContent = "";
   }
 }
 </script>

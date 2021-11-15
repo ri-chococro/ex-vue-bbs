@@ -43,6 +43,16 @@ export default new Vuex.Store({
         }
       }
     },
+
+    /**
+     * 特定の記事を削除する.
+     *
+     * @param state - stateを利用するための引数
+     * @param payload - 削除したい記事のindex番号
+     */
+    deleteArticle(state, payload) {
+      state.articles.splice(payload.articleIndex, 1);
+    },
   },
   actions: {},
   getters: {

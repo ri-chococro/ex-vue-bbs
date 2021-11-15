@@ -60,8 +60,12 @@ export default class Bbs extends Vue {
   private articleName = "";
   // 入力された記事内容
   private articleContent = "";
+  // 名前入力エラー
   private articleNameError = "";
+  // 記事内容エラー
   private articleContentError = "";
+  // エラー有無
+  private noError = true;
 
   // // 入力されたコメント投稿者氏名
   // private commentName = "";
@@ -77,36 +81,59 @@ export default class Bbs extends Vue {
 
   /**
    * Vuexストア内のミューテーションを使って同期処理（新規記事追加）.
+   *
+   * @remarks
+   * Vuexストア内のミューテーションを呼ぶ前に入力値のエラーチェックを行う.
    */
   addArticle() {
     this.articleNameError = "";
     this.articleContentError = "";
-    if (this.articleName == "") {
+    this.noError = true;
+    if (this.articleName === "") {
       this.articleNameError = "名前を入力してください";
+      this.noError = false;
     } else if (this.articleName.length > 50) {
       this.articleNameError = "名前は50字以内で⼊⼒してください";
+      this.noError = false;
     }
 
-    if (this.articleContent == "") {
+    if (this.articleContent === "") {
       this.articleContentError = "内容を入力してください";
+      this.noError = false;
     }
 
-    if (
-      this.articleName !== "" &&
-      this.articleContent !== "" &&
-      this.articleName.length <= 50
-    ) {
-      this["$store"].commit("addArticle", {
-        article: new Article(
-          this["$store"].getters.getArticles[0].id + 1,
-          this.articleName,
-          this.articleContent,
-          []
-        ),
-      });
-      this.articleName = "";
-      this.articleContent = "";
+    if (!this.noError) {
+      return;
     }
+    this.articleNameError = "";
+    this.articleContentError = "";
+    this.noError = true;
+    if (this.articleName === "") {
+      this.articleNameError = "名前を入力してください";
+      this.noError = false;
+    } else if (this.articleName.length > 50) {
+      this.articleNameError = "名前は50字以内で⼊⼒してください";
+      this.noError = false;
+    }
+
+    if (this.articleContent === "") {
+      this.articleContentError = "内容を入力してください";
+      this.noError = false;
+    }
+
+    if (!this.noError) {
+      return;
+    }
+    this["$store"].commit("addArticle", {
+      article: new Article(
+        this["$store"].getters.getArticles[0].id + 1,
+        this.articleName,
+        this.articleContent,
+        []
+      ),
+    });
+    this.articleName = "";
+    this.articleContent = "";
   }
 
   // /**

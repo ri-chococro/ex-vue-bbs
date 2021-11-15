@@ -23,6 +23,7 @@ export default class CompCommentForm extends Vue {
   // 入力されたコメント内容
   private commentContent = "";
 
+  // Bbs.vueからもらってくる記事ID
   @Prop()
   private articleId!: number;
 

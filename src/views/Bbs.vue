@@ -54,6 +54,7 @@ export default class Bbs extends Vue {
   private articleName = "";
   // 入力された記事内容
   private articleContent = "";
+
   // // 入力されたコメント投稿者氏名
   // private commentName = "";
   // // 入力されたコメント内容

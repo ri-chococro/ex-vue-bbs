@@ -21,7 +21,9 @@
         <div>コメント内容：{{ comment.content }}</div>
       </div>
 
-      <div>名前：</div>
+      <CompCommentForm v-bind:article-id="article.id"></CompCommentForm>
+
+      <!-- <div>名前：</div>
       <input type="text" v-model="commentName" />
       <div>コメント：</div>
       <div>
@@ -29,7 +31,7 @@
       </div>
       <button type="button" v-on:click="addComment(article.id)">
         コメント投稿
-      </button>
+      </button> -->
       <hr />
     </div>
   </div>
@@ -38,9 +40,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Article } from "@/types/article";
-import { Comment } from "@/types/comment";
+import CompCommentForm from "@/components/CommentForm.vue";
 
-@Component
+@Component({
+  components: {
+    CompCommentForm,
+  },
+})
 export default class Bbs extends Vue {
   // 最新の投稿記事一覧
   private currentArticleList = [];
@@ -48,10 +54,10 @@ export default class Bbs extends Vue {
   private articleName = "";
   // 入力された記事内容
   private articleContent = "";
-  // 入力されたコメント投稿者氏名
-  private commentName = "";
-  // 入力されたコメント内容
-  private commentContent = "";
+  // // 入力されたコメント投稿者氏名
+  // private commentName = "";
+  // // 入力されたコメント内容
+  // private commentContent = "";
 
   /**
    * Vuexストア内の投稿記事の情報を取得しcurrentArticleListに格納する.
@@ -76,28 +82,32 @@ export default class Bbs extends Vue {
     this.articleContent = "";
   }
 
-  /**
-   * Vuexストア内のミューテーションを使って同期処理（新規コメント追加）.
-   */
-  addComment(articleId: number) {
-    this["$store"].commit("addComment", {
-      comment: new Comment(
-        -1,
-        this.commentName,
-        this.commentContent,
-        articleId
-      ),
-    });
-    this.commentName = "";
-    this.commentContent = "";
-  }
+  // /**
+  //  * Vuexストア内のミューテーションを使って同期処理（新規コメント追加）.
+  //  *
+  //  * @param articleId - 対象の記事ID
+  //  */
+  // addComment(articleId: number) {
+  //   this["$store"].commit("addComment", {
+  //     comment: new Comment(
+  //       -1,
+  //       this.commentName,
+  //       this.commentContent,
+  //       articleId
+  //     ),
+  //   });
+  //   this.commentName = "";
+  //   this.commentContent = "";
+  // }
 
   /**
    * Vuexストア内のミューテーションを使って同期処理（記事削除）.
+   *
+   * @articleIndex - 対象記事のindex番号
    */
   deleteArticle(articleIndex: number) {
     this["$store"].commit("deleteArticle", {
-      articleIndex,
+      articleIndex: articleIndex,
     });
   }
 }

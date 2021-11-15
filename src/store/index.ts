@@ -51,6 +51,8 @@ export default new Vuex.Store({
      * @param payload - 削除したい記事のindex番号
      */
     deleteArticle(state, payload) {
+      console.dir(JSON.stringify(payload));
+
       state.articles.splice(payload.articleIndex, 1);
     },
   },
